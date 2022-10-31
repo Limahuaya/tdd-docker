@@ -1,4 +1,4 @@
-# pull official base image
+﻿# pull official base image
 FROM python:3.10.1-slim-buster
 
 # set working directory
@@ -26,4 +26,6 @@ COPY ./entrypoint.sh .
 RUN chmod +x /usr/src/app/entrypoint.sh
 
 # run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+# https://stackoverflow.com/questions/56459461/docker-compose-exec-usr-src-app-entrypoint-sh-permission-denied
+CMD ["/usr/src/app/entrypoint.sh"]
+
