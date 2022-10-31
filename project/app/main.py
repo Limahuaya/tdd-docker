@@ -42,9 +42,9 @@ async def pong(settings: Settings = Depends(get_settings)):
         "ping": "pong!",
         "environment": settings.environment,
         "testing": settings.testing,
-        "path_app": dir_app,
-        'mapa': mapa,
-        "DATABASE_URL": os.environ.get("DATABASE_URL")
+        # "path_app": dir_app,
+        # 'mapa': mapa,
+        # "DATABASE_URL": os.environ.get("DATABASE_URL")
     }
 
     
