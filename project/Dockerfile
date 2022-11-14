@@ -1,7 +1,7 @@
 ﻿# pull official base image
 FROM python:3.10.1-slim-buster
 
-LABEL org.opencontainers.image.source="https://github.com/limahuaya/tdd-docker/"
+# LABEL org.opencontainers.image.source="https://github.com/limahuaya/tdd-docker/"
 
 # set working directory
 WORKDIR /usr/src/app
