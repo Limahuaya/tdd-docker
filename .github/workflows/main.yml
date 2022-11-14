@@ -3,7 +3,7 @@ name: Continuous Integration and Delivery
 on: [push]
  
 env:
-  IMAGE: docker.pkg.github.com/$(echo $GITHUB_REPOSITORY | tr '[A-Z]' '[a-z]')/summarizer
+ IMAGE: docker.pkg.github.com/$(echo $GITHUB_REPOSITORY | tr '[A-Z]' '[a-z]')/summarizer
  
 jobs:
  
@@ -74,8 +74,4 @@ jobs:
       - name: Black
         run: docker exec fastapi-tdd python -m black . --check
       - name: isort
-<<<<<<< HEAD
         run: docker exec fastapi-tdd python -m isort . --check-only
-=======
-        run: docker exec fastapi-tdd python -m isort . --check-only
->>>>>>> 8efb4e0b949ce1210a2c75a0497a25d48163af8c
