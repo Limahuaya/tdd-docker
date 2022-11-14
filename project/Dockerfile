@@ -1,6 +1,8 @@
 ﻿# pull official base image
 FROM python:3.10.1-slim-buster
 
+LABEL org.opencontainers.image.source="https://github.com/limahuaya/tdd-docker/"
+
 # set working directory
 WORKDIR /usr/src/app
 
@@ -24,6 +26,7 @@ COPY . .
 # add entrypoint.sh
 COPY ./entrypoint.sh .
 RUN chmod +x /usr/src/app/entrypoint.sh
+
 
 # run entrypoint.sh
 # https://stackoverflow.com/questions/56459461/docker-compose-exec-usr-src-app-entrypoint-sh-permission-denied
