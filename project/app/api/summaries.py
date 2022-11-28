@@ -47,7 +47,8 @@ async def delete_summary(id: int = Path(..., gt=0)) -> pydantic.SummaryResponseS
 
 @router.put("/{id}/", response_model=pydantic.SummaryResponseUpdateSchema)
 async def update_summary(
-    payload: pydantic.SummaryUpdatePayloadSchema, id: int = Path(..., title="holaa", gt=0)
+    payload: pydantic.SummaryUpdatePayloadSchema,
+    id: int = Path(..., title="holaa", gt=0),
 ) -> pydantic.SummaryResponseSchema:
     summary = await crud.get(id)
     if not summary:

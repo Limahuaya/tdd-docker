@@ -179,19 +179,8 @@ def test_delete_summary_invalid_id(test_app_with_db):
     assert response_value["detail"][0]["type"] == "value_error.number.not_gt"
 
 
-def test_delete_summary_invalid_id(test_app_with_db):
-    response = test_app_with_db.delete("/summaries/0/")
-    response_value = response.json()
-    assert response.status_code == 422
-    assert response_value["detail"][0]["loc"][1] == "id"
-    assert response_value["detail"][0]["msg"] == "ensure this value is greater than 0"
-    assert response_value["detail"][0]["type"] == "value_error.number.not_gt"
-
-
 def test_create_summary_invalid_url(test_app_with_db):
-    response = test_app_with_db.post(
-        "/summaries/", data=json.dumps({"url": "no-url"})
-    )
+    response = test_app_with_db.post("/summaries/", data=json.dumps({"url": "no-url"}))
     response_value = response.json()
     assert response.status_code == 422
     assert response_value["detail"][0]["loc"][1] == "url"
