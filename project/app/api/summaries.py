@@ -21,7 +21,7 @@ async def create_summary(
 
 
 @router.get("/{id}/", response_model=SummarySchema)
-async def read_summary(id: int) -> SummarySchema:
+async def read_summary(id: int = Path(..., gt=0)) -> SummarySchema:
     summary = await crud.get(id)
     if not summary:
         raise HTTPException(status_code=404, detail="Summary not found")
@@ -37,7 +37,7 @@ async def read_summaries():
 
 
 @router.delete("/{id}/", response_model=pydantic.SummaryResponseSchema)
-async def delete_summary(id: int) -> pydantic.SummaryResponseSchema:
+async def delete_summary(id: int = Path(..., gt=0)) -> pydantic.SummaryResponseSchema:
     summary = await crud.get(id)
     if not summary:
         raise HTTPException(status_code=404, detail="Summary not found")
@@ -47,7 +47,7 @@ async def delete_summary(id: int) -> pydantic.SummaryResponseSchema:
 
 @router.put("/{id}/", response_model=pydantic.SummaryResponseUpdateSchema)
 async def update_summary(
-    payload: pydantic.SummaryUpdatePayloadSchema, id: int = Path(..., gt=0)
+    payload: pydantic.SummaryUpdatePayloadSchema, id: int = Path(..., title="holaa", gt=0)
 ) -> pydantic.SummaryResponseSchema:
     summary = await crud.get(id)
     if not summary:
