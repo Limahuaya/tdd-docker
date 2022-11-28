@@ -29,3 +29,17 @@ async def get_all() -> Union[list, None]:
     if summaries:
         return summaries
     return None
+
+
+async def delete(id: int) -> int:
+    summary = await TextSummary.filter(id=id).first().delete()
+    return summary
+
+
+
+async def update(id: int, payload: SummaryPayloadSchema) -> int:
+    summary = await TextSummary.filter(id=id).first()
+    summary.url = payload.url
+    summary.summary = payload.summary
+    await summary.save()
+    return summary
