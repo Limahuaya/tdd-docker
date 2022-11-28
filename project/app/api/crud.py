@@ -36,7 +36,6 @@ async def delete(id: int) -> int:
     return summary
 
 
-
 async def update(id: int, payload: SummaryPayloadSchema) -> int:
     summary = await TextSummary.filter(id=id).first()
     summary.url = payload.url

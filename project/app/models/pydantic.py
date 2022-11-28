@@ -4,6 +4,7 @@ from pydantic import validator
 from pydantic import BaseModel
 import validators
 
+
 class SummaryPayloadSchema(BaseModel):
     url: str
 
@@ -14,13 +15,13 @@ class SummaryPayloadSchema(BaseModel):
         return value
 
 
-
 class SummaryUpdatePayloadSchema(SummaryPayloadSchema):
     summary: str
 
-        
+
 class SummaryResponseSchema(SummaryPayloadSchema):
     id: int
+
 
 class SummaryResponseUpdateSchema(SummaryUpdatePayloadSchema):
     id: int

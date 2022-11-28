@@ -78,9 +78,9 @@ def test_update_summary(test_app_with_db):
     summary_id = response.json()["id"]
 
     response = test_app_with_db.put(
-        f"/summaries/{summary_id}/", 
+        f"/summaries/{summary_id}/",
         data=json.dumps({
-            "url": "https://foomodif.bar", 
+            "url": "https://foomodif.bar",
             "summary": "updated!!"
         })
     )
@@ -90,7 +90,7 @@ def test_update_summary(test_app_with_db):
 
 def test_update_summary_incorrect_id(test_app_with_db):
     response = test_app_with_db.put(
-        "/summaries/999999999/", 
+        "/summaries/999999999/",
         data=json.dumps({"url": "https://foomodif.bar", "summary": "updated!!"})
     )
     assert response.status_code == 404
@@ -104,33 +104,16 @@ def test_update_summary_invalid_json(test_app_with_db):
     summary_id = response.json()["id"]
 
     response = test_app_with_db.put(
-        f"/summaries/${summary_id}/", 
+        f"/summaries/${summary_id}/",
         data='''{
-            "url": "https://foomodif.bar", 
+            "url": "https://foomodif.bar",
             "summar": "updat
         }'''
     )
-   
+    result = response.json()
     assert response.status_code == 422
-    assert response.json() == {
-        "detail":[
-            {
-                "loc":[
-                    "body",
-                    74
-                ],
-                "msg":"Invalid control character at: line 3 column 29 (char 74)",
-                "type":"value_error.jsondecode",
-                "ctx":{
-                    "msg":"Invalid control character at",
-                    "doc":"{\n            \"url\": \"https://foomodif.bar\", \n            \"summar\": \"updat\n        }",
-                    "pos":74,
-                    "lineno":3,
-                    "colno":29
-                }
-            }
-        ]
-    }
+    assert result['detail'][0]['msg'] == "Invalid control character at: line 3 column 29 (char 73)"
+    assert result['detail'][0]['type'] == "value_error.jsondecode"
 
 
 def test_update_summary_invalid_keys(test_app_with_db):
@@ -140,38 +123,31 @@ def test_update_summary_invalid_keys(test_app_with_db):
     summary_id = response.json()["id"]
 
     response = test_app_with_db.put(
-        f"/summaries/${summary_id}/", 
+        f"/summaries/${summary_id}/",
         data=json.dumps({
             "url": "no-url",
             "summar": "otr!!!",
         })
     )
+
+    response_data = response.json()
     assert response.status_code == 422
-    assert response.json() == {
-        "detail":[
-            {
-                "loc":[
-                    "path",
-                    "id"
-                ],
-                "msg":"value is not a valid integer",
-                "type":"type_error.integer"
-            },
-            {
-                "loc":[
-                    "body",
-                    "url"
-                ],
-                "msg":"Ingrese una url valida.",
-                "type":"value_error"
-            },
-            {
-                "loc":[
-                    "body",
-                    "summary"
-                ],
-                "msg":"field required",
-                "type":"value_error.missing"
-            }
-        ]
-    }
+    assert response_data['detail'][1]['loc'][1]=='url'
+    assert response_data['detail'][1]['msg']=='Ingrese una url valida.'
+    assert response_data['detail'][2]['loc'][1]=='summary'
+    assert response_data['detail'][2]['msg']=='field required'
+
+
+def test_update_summary_invalid_id(test_app_with_db):
+    response = test_app_with_db.put(
+        "/summaries/0/",
+        data=json.dumps({
+            "url": "https://look.bar",
+            "summary": "otr!!!",
+        })
+    )
+    response_value = response.json()
+    assert response.status_code == 422
+    assert response_value['detail'][0]['loc'][1] == 'id'
+    assert response_value['detail'][0]['msg'] == "ensure this value is greater than 0"
+    assert response_value['detail'][0]['type'] == "value_error.number.not_gt"
